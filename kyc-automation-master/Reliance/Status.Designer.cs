@@ -36,11 +36,10 @@ namespace Reliance
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Status));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.content = new System.Windows.Forms.Label();
-            this.axAcroPDF1 = new AxAcroPDFLib.AxAcroPDF();
             this.axAcroPDF2 = new AxAcroPDFLib.AxAcroPDF();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).BeginInit();
+            this.axAcroPDF1 = new AxAcroPDFLib.AxAcroPDF();
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).BeginInit();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -57,20 +56,11 @@ namespace Reliance
             this.content.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
             this.content.Location = new System.Drawing.Point(29, 74);
             this.content.Name = "content";
-            this.content.Size = new System.Drawing.Size(463, 64);
+            this.content.Size = new System.Drawing.Size(537, 64);
             this.content.TabIndex = 1;
             this.content.Text = "Checking...";
             this.content.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.content.UseMnemonic = false;
-            // 
-            // axAcroPDF1
-            // 
-            this.axAcroPDF1.Enabled = true;
-            this.axAcroPDF1.Location = new System.Drawing.Point(330, 170);
-            this.axAcroPDF1.Name = "axAcroPDF1";
-            this.axAcroPDF1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAcroPDF1.OcxState")));
-            this.axAcroPDF1.Size = new System.Drawing.Size(288, 288);
-            this.axAcroPDF1.TabIndex = 2;
             // 
             // axAcroPDF2
             // 
@@ -81,29 +71,22 @@ namespace Reliance
             this.axAcroPDF2.Size = new System.Drawing.Size(288, 288);
             this.axAcroPDF2.TabIndex = 3;
             // 
-            // label1
+            // axAcroPDF1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(241, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(251, 46);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Checking...";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.UseMnemonic = false;
+            this.axAcroPDF1.Enabled = true;
+            this.axAcroPDF1.Location = new System.Drawing.Point(323, 170);
+            this.axAcroPDF1.Name = "axAcroPDF1";
+            this.axAcroPDF1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAcroPDF1.OcxState")));
+            this.axAcroPDF1.Size = new System.Drawing.Size(288, 288);
+            this.axAcroPDF1.TabIndex = 3;
             // 
             // Status
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(568, 496);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.axAcroPDF2);
+            this.ClientSize = new System.Drawing.Size(642, 496);
             this.Controls.Add(this.axAcroPDF1);
+            this.Controls.Add(this.axAcroPDF2);
             this.Controls.Add(this.content);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.Margin = new System.Windows.Forms.Padding(6);
@@ -111,8 +94,8 @@ namespace Reliance
             this.Padding = new System.Windows.Forms.Padding(26, 74, 26, 25);
             this.Text = "Verifying Details";
             this.Load += new System.EventHandler(this.Form2_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -120,8 +103,7 @@ namespace Reliance
         #endregion
         private BackgroundWorker backgroundWorker1;
         private Label content;
-        private AxAcroPDFLib.AxAcroPDF axAcroPDF1;
         private AxAcroPDFLib.AxAcroPDF axAcroPDF2;
-        private Label label1;
+        private AxAcroPDFLib.AxAcroPDF axAcroPDF1;
     }
 }
