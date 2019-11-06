@@ -38,6 +38,7 @@ namespace Reliance
         bool showPdf = false;
         int UnreadmailCount = 0;
         int count = 0;
+        bool isMinimize = false;
         string[] statusValues = new string[] { "Checking Policy Number", "Checking Insured Name", "Checking Address", "Checking Phone", "Checking Email", "Checking Registration Number", "Checking Engine Number", "Checking Chassis", "Checking Make And Model", "Checking Body Type", "Checking Year Of Manufacture", "Checking Seating Capacity", "Checking Previous Policy Year", "Checking Previous Policy Company Name", "Checking Vehicle Category", "Checking Vehicle Sub-Category", "Checking Previous Policy RED", "Checking Salutation", "Checking Hypothecation", "Checking RTO" };
         public Status()
         {
@@ -48,6 +49,7 @@ namespace Reliance
 
             InitializeComponent();
         }
+
         public static List<string> myPaths;
         public Status(List<string> _paths)
         {
@@ -58,26 +60,30 @@ namespace Reliance
         private void Form2_Load(object sender, EventArgs e)
         {
             Thread.Sleep(2000);
+            this.WindowState = FormWindowState.Minimized;
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.RunWorkerAsync();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {           
+        {
             pdfHandler.DeleteFile(webBrowser.downloadPath);
             Dictionary<int, int> matchFields = new Dictionary<int, int>();
+           
             emailHandler.LoginAndNavigateToInbox("kartik.rpa@gmail.com", "Kartik1a$");
             webBrowser.Click(WebElements.BtnInsuranceLabel);
             List<IWebElement> unreadMails = emailHandler.GetUnreadEmails();
             UnreadmailCount = unreadMails.Count;
             foreach (IWebElement item in unreadMails)
-            {              
+            {
                 count++;
                 CustomerDetailsModel cModel = new CustomerDetailsModel();
                 PolicyDetailsModel pModel = new PolicyDetailsModel();
                 webBrowser.ClickWithJavaScript(item.FindElement(By.CssSelector(WebElements.ChildElementUnreadEmails)));
                 Dictionary<string, string> paths = emailHandler.DownloadAndGetFilePaths();
                 Thread.Sleep(2000);
+                isMinimize = false;
+                backgroundWorker1.ReportProgress(1);
                 myPaths = paths.Values.ToList();
                 showPdf = true;
                 backgroundWorker1.ReportProgress(1);
@@ -137,10 +143,11 @@ namespace Reliance
                 {
                     // var test = ex.InnerExceptions[0].Message;
                 }
-
-
                 // MessageBox.Show(result);
                 statusText = result;
+                backgroundWorker1.ReportProgress(1);
+                Thread.Sleep(1000);
+                isMinimize = true;
                 backgroundWorker1.ReportProgress(1);
                 // fileHandler.Close("AcroRd32");
                 webBrowser.Click(WebElements.BtnReply);
@@ -150,8 +157,9 @@ namespace Reliance
                 webBrowser.Click(WebElements.BtnInsuranceLabel);
                 pdfHandler.DeleteFile(webBrowser.downloadPath);
                 Thread.Sleep(3000);
+              
 
-            }           
+            }
             ServiceResult = "Completed";
             backgroundWorker1.ReportProgress(1);
             webBrowser.Dispose();
@@ -168,6 +176,14 @@ namespace Reliance
                 lblMailCount.Text = "Processing Unread mail " + count + " of " + UnreadmailCount;
                 this.WindowState = FormWindowState.Minimized;
             }
+            if (isMinimize == true)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
             content.Text = statusText;
             if (ServiceResult == "Completed")
             {
@@ -178,10 +194,9 @@ namespace Reliance
         {
             // this.Close();
         }
-
+      
         public static Dictionary<string, string> GetFilePaths(string username, string password)
         {
-
             pdfHandler.DeleteFile(webBrowser.downloadPath);
             Dictionary<int, int> matchFields = new Dictionary<int, int>();
             emailHandler.LoginAndNavigateToInbox(username, password);
