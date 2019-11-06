@@ -101,10 +101,10 @@ namespace Reliance
                             backgroundWorker1.ReportProgress(1);
                         }
                     }
-                    while (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    //while (token.IsCancellationRequested)
+                    //{
+                    //    token.ThrowIfCancellationRequested();
+                    //}
 
                 }, token);
 
@@ -134,15 +134,8 @@ namespace Reliance
                 }
                 matchFields = MatchingFields(cModel, pModel);
                 string result = $"Using {paths.Keys.ToArray()[0]} and {paths.Keys.ToArray()[1]}, {matchFields.Keys.FirstOrDefault()} fields matching out of 22 fields and {matchFields.Values.FirstOrDefault()} are empty";
-                try
-                {
-                    cancellationTokenSource.Cancel();
-                    task.Wait();
-                }
-                catch (AggregateException ex)
-                {
-                    // var test = ex.InnerExceptions[0].Message;
-                }
+                cancellationTokenSource.Cancel();
+                task.Wait();
                 // MessageBox.Show(result);
                 statusText = result;
                 backgroundWorker1.ReportProgress(1);
