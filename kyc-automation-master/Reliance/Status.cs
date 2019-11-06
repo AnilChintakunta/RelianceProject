@@ -36,7 +36,8 @@ namespace Reliance
         string statusText = "";
         List<string> paths = new List<string>();
         bool showPdf = false;
-
+        int UnreadmailCount = 0;
+        int count = 0;
         string[] statusValues = new string[] { "Checking Policy Number", "Checking Insured Name", "Checking Address", "Checking Phone", "Checking Email", "Checking Registration Number", "Checking Engine Number", "Checking Chassis", "Checking Make And Model", "Checking Body Type", "Checking Year Of Manufacture", "Checking Seating Capacity", "Checking Previous Policy Year", "Checking Previous Policy Company Name", "Checking Vehicle Category", "Checking Vehicle Sub-Category", "Checking Previous Policy RED", "Checking Salutation", "Checking Hypothecation", "Checking RTO" };
         public Status()
         {
@@ -54,68 +55,65 @@ namespace Reliance
             myPaths = _paths;
             InitializeComponent();
         }
-
-
         private void Form2_Load(object sender, EventArgs e)
         {
-            //axAcroPDF1.src = paths[0];
-            //axAcroPDF2.src = paths[1];
             Thread.Sleep(2000);
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.RunWorkerAsync();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
+        {           
             pdfHandler.DeleteFile(webBrowser.downloadPath);
             Dictionary<int, int> matchFields = new Dictionary<int, int>();
             emailHandler.LoginAndNavigateToInbox("kartik.rpa@gmail.com", "Kartik1a$");
             webBrowser.Click(WebElements.BtnInsuranceLabel);
             List<IWebElement> unreadMails = emailHandler.GetUnreadEmails();
+            UnreadmailCount = unreadMails.Count;
             foreach (IWebElement item in unreadMails)
-            {
+            {              
+                count++;
                 CustomerDetailsModel cModel = new CustomerDetailsModel();
                 PolicyDetailsModel pModel = new PolicyDetailsModel();
                 webBrowser.ClickWithJavaScript(item.FindElement(By.CssSelector(WebElements.ChildElementUnreadEmails)));
                 Dictionary<string, string> paths = emailHandler.DownloadAndGetFilePaths();
-                Thread.Sleep(4000);
+                Thread.Sleep(2000);
                 myPaths = paths.Values.ToList();
                 showPdf = true;
                 backgroundWorker1.ReportProgress(1);
 
-                //var ts = new CancellationTokenSource();
-                //CancellationToken ct = ts.Token;
-                //Task.Factory.StartNew(() =>
-                //{
-                //    while (true)
-                //    {
-                //        foreach (string status in statusValues)
-                //        {
-                //            Thread.Sleep(500);
-                //            statusText = status;
-                //            backgroundWorker1.ReportProgress(1);
-                //        }
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken token = cancellationTokenSource.Token;
+                Task task = Task.Run(() =>
+                {
+                    while (!token.IsCancellationRequested)
+                    {
+                        foreach (string status in statusValues)
+                        {
+                            Thread.Sleep(500);
+                            statusText = status;
+                            backgroundWorker1.ReportProgress(1);
+                        }
+                    }
+                    while (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
 
-                //        if (ct.IsCancellationRequested)
-                //        {
-                //            // another thread decided to cancel                          
-                //            break;
-                //        }
-                //    }
-                //}, ct);
-                               
-                CancellationTokenSource tokenSource = new CancellationTokenSource();
-                CancellationToken token = tokenSource.Token;
-                Task t = Task.Run(() =>
-                  {
-                      foreach (string status in statusValues)
-                      {
-                          Thread.Sleep(500);
-                          statusText = status;
-                          backgroundWorker1.ReportProgress(1);
-                      }
+                }, token);
 
-                  }, token);
+                //CancellationTokenSource tokenSource = new CancellationTokenSource();
+                //CancellationToken token = tokenSource.Token;
+                //Task t = Task.Run(() =>
+                //  {
+                //      foreach (string status in statusValues)
+                //      {
+                //          Thread.Sleep(500);
+                //          statusText = status;
+                //          backgroundWorker1.ReportProgress(1);
+                //      }
+
+                //  }, token);
 
                 foreach (KeyValuePair<string, string> path in paths)
                 {
@@ -129,11 +127,19 @@ namespace Reliance
                     }
                 }
                 matchFields = MatchingFields(cModel, pModel);
-
                 string result = $"Using {paths.Keys.ToArray()[0]} and {paths.Keys.ToArray()[1]}, {matchFields.Keys.FirstOrDefault()} fields matching out of 22 fields and {matchFields.Values.FirstOrDefault()} are empty";
-                tokenSource.Cancel();
-                Thread.Sleep(1000);               
-               // MessageBox.Show(result);
+                try
+                {
+                    cancellationTokenSource.Cancel();
+                    task.Wait();
+                }
+                catch (AggregateException ex)
+                {
+                    // var test = ex.InnerExceptions[0].Message;
+                }
+
+
+                // MessageBox.Show(result);
                 statusText = result;
                 backgroundWorker1.ReportProgress(1);
                 // fileHandler.Close("AcroRd32");
@@ -143,9 +149,11 @@ namespace Reliance
                 webBrowser.Pause(3);
                 webBrowser.Click(WebElements.BtnInsuranceLabel);
                 pdfHandler.DeleteFile(webBrowser.downloadPath);
-                ServiceResult = "Completed";
-                backgroundWorker1.ReportProgress(1);
-            }
+                Thread.Sleep(3000);
+
+            }           
+            ServiceResult = "Completed";
+            backgroundWorker1.ReportProgress(1);
             webBrowser.Dispose();
         }
 
@@ -157,11 +165,10 @@ namespace Reliance
                 axAcroPDF1.src = myPaths[0];
                 Thread.Sleep(2000);
                 axAcroPDF2.src = myPaths[1];
-
-
+                lblMailCount.Text = "Processing Unread mail " + count + " of " + UnreadmailCount;
+                this.WindowState = FormWindowState.Minimized;
             }
             content.Text = statusText;
-
             if (ServiceResult == "Completed")
             {
                 this.Close();

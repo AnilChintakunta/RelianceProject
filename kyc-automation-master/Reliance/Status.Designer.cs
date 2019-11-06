@@ -36,10 +36,11 @@ namespace Reliance
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Status));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.content = new System.Windows.Forms.Label();
-            this.axAcroPDF2 = new AxAcroPDFLib.AxAcroPDF();
             this.axAcroPDF1 = new AxAcroPDFLib.AxAcroPDF();
-            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF2)).BeginInit();
+            this.axAcroPDF2 = new AxAcroPDFLib.AxAcroPDF();
+            this.lblMailCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF2)).BeginInit();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -53,40 +54,55 @@ namespace Reliance
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.content.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.content.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
-            this.content.Location = new System.Drawing.Point(29, 74);
+            this.content.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.content.Location = new System.Drawing.Point(29, 56);
             this.content.Name = "content";
-            this.content.Size = new System.Drawing.Size(537, 64);
+            this.content.Size = new System.Drawing.Size(589, 65);
             this.content.TabIndex = 1;
             this.content.Text = "Checking...";
             this.content.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.content.UseMnemonic = false;
             // 
-            // axAcroPDF2
-            // 
-            this.axAcroPDF2.Enabled = true;
-            this.axAcroPDF2.Location = new System.Drawing.Point(29, 170);
-            this.axAcroPDF2.Name = "axAcroPDF2";
-            this.axAcroPDF2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAcroPDF2.OcxState")));
-            this.axAcroPDF2.Size = new System.Drawing.Size(288, 288);
-            this.axAcroPDF2.TabIndex = 3;
-            // 
             // axAcroPDF1
             // 
             this.axAcroPDF1.Enabled = true;
-            this.axAcroPDF1.Location = new System.Drawing.Point(323, 170);
+            this.axAcroPDF1.Location = new System.Drawing.Point(330, 148);
             this.axAcroPDF1.Name = "axAcroPDF1";
             this.axAcroPDF1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAcroPDF1.OcxState")));
             this.axAcroPDF1.Size = new System.Drawing.Size(288, 288);
             this.axAcroPDF1.TabIndex = 3;
             // 
+            // axAcroPDF2
+            // 
+            this.axAcroPDF2.Enabled = true;
+            this.axAcroPDF2.Location = new System.Drawing.Point(34, 148);
+            this.axAcroPDF2.Name = "axAcroPDF2";
+            this.axAcroPDF2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axAcroPDF2.OcxState")));
+            this.axAcroPDF2.Size = new System.Drawing.Size(288, 288);
+            this.axAcroPDF2.TabIndex = 3;
+            // 
+            // lblMailCount
+            // 
+            this.lblMailCount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblMailCount.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.lblMailCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.lblMailCount.Location = new System.Drawing.Point(44, 448);
+            this.lblMailCount.Name = "lblMailCount";
+            this.lblMailCount.Size = new System.Drawing.Size(564, 43);
+            this.lblMailCount.TabIndex = 1;
+            this.lblMailCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMailCount.UseMnemonic = false;
+            // 
             // Status
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 496);
+            this.ClientSize = new System.Drawing.Size(694, 527);
             this.Controls.Add(this.axAcroPDF1);
             this.Controls.Add(this.axAcroPDF2);
+            this.Controls.Add(this.lblMailCount);
             this.Controls.Add(this.content);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.Margin = new System.Windows.Forms.Padding(6);
@@ -94,8 +110,8 @@ namespace Reliance
             this.Padding = new System.Windows.Forms.Padding(26, 74, 26, 25);
             this.Text = "Verifying Details";
             this.Load += new System.EventHandler(this.Form2_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -105,5 +121,6 @@ namespace Reliance
         private Label content;
         private AxAcroPDFLib.AxAcroPDF axAcroPDF2;
         private AxAcroPDFLib.AxAcroPDF axAcroPDF1;
+        private Label lblMailCount;
     }
 }
